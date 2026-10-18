@@ -5,6 +5,10 @@ only to EV-ES Cloud over MQTT/TLS. Home Assistant then reads the latest device
 telemetry from Cloud over HTTPS every 15 seconds; it never receives the
 device MQTT username, MQTT password, pairing key, or command key.
 
+On Home Assistant 2026.3 or newer the integration uses the same EV-ES battery
+icon as the Cloud website. Older Home Assistant versions use the standard
+custom-integration icon.
+
 ## Install through HACS (recommended)
 
 The integration is prepared as a HACS repository. Publish the contents of

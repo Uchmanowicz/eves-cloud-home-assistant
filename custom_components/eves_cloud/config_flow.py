@@ -21,6 +21,11 @@ class EvesCloudConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             base_url = str(user_input[CONF_BASE_URL]).rstrip("/")
             email = str(user_input[CONF_EMAIL]).strip().lower()
+            # Check before requesting a new token. Cloud intentionally permits
+            # only one active HA token per account, so a duplicate setup must
+            # never invalidate the token used by an existing entry.
+            await self.async_set_unique_id(f"eves_cloud_{email}")
+            self._abort_if_unique_id_configured()
             client = EvesCloudClient(async_get_clientsession(self.hass), base_url)
             try:
                 response = await client.async_login(email, str(user_input[CONF_PASSWORD]))
@@ -35,8 +40,6 @@ class EvesCloudConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 if not isinstance(token, str) or token == "":
                     errors["base"] = "cannot_connect"
                 else:
-                    await self.async_set_unique_id(f"eves_cloud_{email}")
-                    self._abort_if_unique_id_configured()
                     return self.async_create_entry(
                         title=f"EV-ES Cloud ({email})",
                         data={CONF_BASE_URL: base_url, CONF_EMAIL: email, CONF_TOKEN: token},

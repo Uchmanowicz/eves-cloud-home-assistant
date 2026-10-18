@@ -1,0 +1,31 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Połącz z EV-ES Cloud",
+        "description": "Hasło jest używane jednorazowo przez HTTPS do utworzenia osobnego tokenu Cloud tylko do odczytu.",
+        "data": {
+          "base_url": "Adres EV-ES Cloud",
+          "email": "Adres e-mail",
+          "password": "Hasło"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Połącz ponownie z EV-ES Cloud",
+        "description": "Token Cloud wygasł lub został unieważniony. Wpisz hasło, aby utworzyć nowy.",
+        "data": {
+          "password": "Hasło"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z EV-ES Cloud.",
+      "invalid_auth": "Nieprawidłowy adres e-mail lub hasło.",
+      "subscription_required": "Wymagana jest aktywna subskrypcja EV-ES Cloud."
+    },
+    "abort": {
+      "already_configured": "To konto EV-ES Cloud jest już skonfigurowane.",
+      "reauth_successful": "Ponowne połączenie z EV-ES Cloud powiodło się."
+    }
+  }
+}

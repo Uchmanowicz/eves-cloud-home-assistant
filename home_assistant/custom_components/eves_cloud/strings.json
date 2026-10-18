@@ -1,0 +1,31 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect EV-ES Cloud",
+        "description": "Your password is used once over HTTPS to create a separate read-only Cloud token.",
+        "data": {
+          "base_url": "EV-ES Cloud URL",
+          "email": "Email address",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reconnect EV-ES Cloud",
+        "description": "Your Cloud token expired or was revoked. Enter the password to issue a replacement.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to EV-ES Cloud.",
+      "invalid_auth": "Invalid email address or password.",
+      "subscription_required": "An active EV-ES Cloud subscription is required."
+    },
+    "abort": {
+      "already_configured": "This EV-ES Cloud account is already configured.",
+      "reauth_successful": "EV-ES Cloud was reconnected successfully."
+    }
+  }
+}

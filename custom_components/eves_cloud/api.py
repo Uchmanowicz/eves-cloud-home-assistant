@@ -42,7 +42,7 @@ class EvesCloudClient:
         return await self._request("GET")
 
     async def _request(self, method: str, **kwargs: Any) -> dict[str, Any]:
-        headers = {"Accept": "application/json", "User-Agent": "HomeAssistant-EVES-Cloud/0.1"}
+        headers = {"Accept": "application/json", "User-Agent": "HomeAssistant-EVES-Cloud/0.1.1"}
         if self._token:
             headers["Authorization"] = f"Bearer {self._token}"
         try:

@@ -42,9 +42,10 @@ class EvesCloudClient:
         return await self._request("GET")
 
     async def _request(self, method: str, **kwargs: Any) -> dict[str, Any]:
-        headers = {"Accept": "application/json", "User-Agent": "HomeAssistant-EVES-Cloud/0.1.3"}
+        headers = {"Accept": "application/json", "User-Agent": "HomeAssistant-EVES-Cloud/0.1.4"}
         if self._token:
             headers["Authorization"] = f"Bearer {self._token}"
+            headers["X-EVES-Cloud-Token"] = self._token
         try:
             async with self._session.request(method, self.endpoint, headers=headers, timeout=20, **kwargs) as response:
                 try:

@@ -10,5 +10,5 @@ CONF_BASE_URL = "base_url"
 CONF_EMAIL = "email"
 CONF_TOKEN = "token"
 CONF_PASSWORD = "password"
-PLATFORMS = ["sensor", "binary_sensor"]
+PLATFORMS = ["sensor", "binary_sensor", "switch", "number", "select", "button"]
 UPDATE_INTERVAL = timedelta(seconds=15)

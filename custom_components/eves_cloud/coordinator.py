@@ -37,3 +37,7 @@ class EvesCloudCoordinator(DataUpdateCoordinator[dict[str, dict]]):
             for device in devices
             if isinstance(device, dict) and device.get("serial_number")
         }
+
+    async def async_command(self, serial_number: str, action: str, **data) -> None:
+        """Queue a command without treating it as an immediate telemetry update."""
+        await self.client.async_command(action, serial_number, **data)

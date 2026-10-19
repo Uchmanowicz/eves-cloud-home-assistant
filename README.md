@@ -1,9 +1,10 @@
 # EV-ES Cloud for Home Assistant
 
-This is a local, read-only Home Assistant custom integration. EV-BPM connects
-only to EV-ES Cloud over MQTT/TLS. Home Assistant then reads the latest device
-telemetry from Cloud over HTTPS every 15 seconds; it never receives the
-device MQTT username, MQTT password, pairing key, or command key.
+This is a Home Assistant custom integration. EV-BPM connects only to EV-ES
+Cloud over MQTT/TLS. Home Assistant reads the latest device telemetry from
+Cloud over HTTPS every 15 seconds and, for supported controls, queues a
+short-lived signed command through Cloud. It never receives the device MQTT
+username, MQTT password, pairing key, or command key.
 
 On Home Assistant 2026.3 or newer the integration uses the same EV-ES battery
 icon as the Cloud website. Older Home Assistant versions use the standard
@@ -57,10 +58,23 @@ account that has access to the desired devices. Shared devices are included.
 ## Entities
 
 Each assigned EV-BPM becomes one Home Assistant device with sensors for SOC,
-SOH, power, current, pack/cell voltages, temperature, cycles, current limits,
-states and error counts. Binary sensors report online state, battery enabled
-state, balancing and contactors. Device-level attributes contain the raw
-states, group, last-seen time and error lists.
+SOH, power, current, pack/cell voltages and limits, global cell IDs,
+temperatures, cycles, current limits, device/battery states, local IP address,
+firmware, technical diagnostics and current/last error counts. Binary sensors
+report online state, active balancing and contactors. Device-level attributes
+contain the raw states, group, last-seen time, error lists and capabilities.
 
-The first release is deliberately read-only. It does not send Enable, Disable,
-Reset or configuration commands through Home Assistant.
+## Controls
+
+Version 0.2.1 also provides controls through the existing Cloud signed-command
+queue: Battery enabled, Balancing enabled, Reset device, Battery ID, maximum
+charge/discharge current, maximum cell delta, balance minimum voltage and
+balance-voltage hysteresis. It also provides Check for firmware updates,
+Update firmware (only when an update is reported) and Calibrate ADC sensors
+(only when the device reports support).
+
+The current values remain visible until the BPM receives the command and sends
+its next telemetry update. Configuration controls are available only to the
+device owner; a shared recipient can use Battery enabled and Reset device, the
+same permissions as in EV-ES Cloud. Every command requires the device to be
+online and expires shortly if it cannot be delivered.

@@ -10,11 +10,13 @@ from .entity import EvesCloudEntity
 
 BINARY_SENSORS = (
     ("online", "Online", BinarySensorDeviceClass.CONNECTIVITY),
-    ("battery_enabled", "Battery enabled", None),
     ("is_balancing", "Balancing", None),
     ("contactor_negative", "Negative contactor", None),
     ("contactor_positive", "Positive contactor", None),
     ("contactor_precharge", "Precharge contactor", None),
+    ("config_can_balance", "Balancing supported", None),
+    ("config_can_calibrate_adc", "ADC calibration supported", None),
+    ("config_firmware_update_available", "Firmware update available", None),
 )
 
 

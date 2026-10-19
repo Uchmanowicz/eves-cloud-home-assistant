@@ -19,6 +19,10 @@ class EvesCloudSubscriptionError(EvesCloudApiError):
     """The Cloud account has no active subscription."""
 
 
+class EvesCloudCommandError(EvesCloudApiError):
+    """Cloud rejected a device command."""
+
+
 class EvesCloudClient:
     """Read latest EV-BPM telemetry from EV-ES Cloud."""
 
@@ -41,8 +45,14 @@ class EvesCloudClient:
             raise EvesCloudAuthenticationError("Missing EV-ES Cloud token")
         return await self._request("GET")
 
+    async def async_command(self, action: str, serial_number: str, **data: Any) -> dict[str, Any]:
+        """Queue a signed EV-BPM command through EV-ES Cloud."""
+        if not self._token:
+            raise EvesCloudAuthenticationError("Missing EV-ES Cloud token")
+        return await self._request("POST", json={"action": action, "serial_number": serial_number, **data})
+
     async def _request(self, method: str, **kwargs: Any) -> dict[str, Any]:
-        headers = {"Accept": "application/json", "User-Agent": "HomeAssistant-EVES-Cloud/0.1.4"}
+        headers = {"Accept": "application/json", "User-Agent": "HomeAssistant-EVES-Cloud/0.2.1"}
         if self._token:
             headers["Authorization"] = f"Bearer {self._token}"
             headers["X-EVES-Cloud-Token"] = self._token
@@ -62,5 +72,9 @@ class EvesCloudClient:
         if response.status == 429:
             raise EvesCloudApiError("Cloud sign-in is temporarily rate limited")
         if response.status >= 400 or not isinstance(body, dict) or body.get("ok") is not True:
-            raise EvesCloudApiError(f"Cloud API error: HTTP {response.status}")
+            error = body.get("error") if isinstance(body, dict) else None
+            message = f"Cloud API error: {error or f'HTTP {response.status}'}"
+            if method == "POST" and self._token:
+                raise EvesCloudCommandError(message)
+            raise EvesCloudApiError(message)
         return body
